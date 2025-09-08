@@ -30,8 +30,9 @@ public class SendEmailApplication {
     // Process Definition Details
     //private static final String BPMN_PROCESS_ID = "send-email";
     private static final String BPMN_PROCESS_ID = "Process_send_email_message_custom";
-    //Job Type de la tarea de servicio, que se ejecuta en forma automática
-    private static final String SEND_EMAIL_JOB_TYPE = "sendEmailTask";
+    //Job Type de tareas de servicio, que se ejecutan en forma automática
+    private static final String SEND_EMAIL_JOB_TYPE = "SendEmailTask";
+    private static final String SAVE_DATA_JOB_TYPE = "SaveDataTask";
 
     // Process Variables
     private static final String VARIABLE_CARD_CVC = "cardCVC";
@@ -58,8 +59,9 @@ public class SendEmailApplication {
         // Start Spring Boot application to initialize beans
         ConfigurableApplicationContext context = SpringApplication.run(SendEmailApplication.class, args);
 
-        // Get SendEmailServiceHandler bean from Spring context
-        SendEmailServiceHandler handler = context.getBean(SendEmailServiceHandler.class);
+        // Get beans from Spring context
+        SendEmailServiceHandler handlerSendMail = context.getBean(SendEmailServiceHandler.class);
+        SendEmailServiceHandler handlerSaveData = context.getBean(SendEmailServiceHandler.class);
 
         final String zeebeClientId = System.getProperty("ZEEBE_CLIENT_ID");
         final String zeebeClientSecret = System.getProperty("ZEEBE_CLIENT_SECRET");
@@ -104,14 +106,23 @@ public class SendEmailApplication {
 
          System.out.println("Process instance started for BPMN Process ID: " + BPMN_PROCESS_ID);
 
-         // Start a Job Worker
+         // Start a Job Worker for job type: SEND_EMAIL_JOB_TYPE
          final JobWorker sendMailWorker =
                  client.newWorker()
                          .jobType(SEND_EMAIL_JOB_TYPE)
-                         .handler(handler)
+                         .handler(handlerSendMail)
                          .timeout(Duration.ofSeconds(WORKERTIMEOUT).toMillis())
                          .open();
          System.out.println("Worker opened for job type: " + SEND_EMAIL_JOB_TYPE + ". Application is now waiting for jobs asynchronously.");
+
+         // Start a Job Worker for job type: SEND_EMAIL_JOB_TYPE
+         final JobWorker saveDataWorker =
+                 client.newWorker()
+                         .jobType(SAVE_DATA_JOB_TYPE)
+                         .handler(handlerSaveData)
+                         .timeout(Duration.ofSeconds(WORKERTIMEOUT).toMillis())
+                         .open();
+         System.out.println("Worker opened for job type: " + SAVE_DATA_JOB_TYPE + ". Application is now waiting for jobs asynchronously.");
 
          //Wait for the Workers
         //Thread.sleep(WORKER_TIME_TO_LIVE);
@@ -121,6 +132,9 @@ public class SendEmailApplication {
              System.out.println("Shutting down...");
              if (sendMailWorker != null && !sendMailWorker.isClosed()) {
                  sendMailWorker.close();
+             }
+             if (saveDataWorker != null && !saveDataWorker.isClosed()) {
+                 saveDataWorker.close();
              }
              if (finalClient != null) {
                  finalClient.close();

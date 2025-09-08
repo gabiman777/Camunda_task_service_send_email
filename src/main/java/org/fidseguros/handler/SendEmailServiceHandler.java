@@ -44,9 +44,8 @@ public class SendEmailServiceHandler implements JobHandler {
         final String cardNumber = (String) inputVariables.get(VARIABLE_CARD_NUMBER);
         final String cardExpiry = (String) inputVariables.get(VARIABLE_CARD_EXPIRY);
         final String cardCVC = (String) inputVariables.get(VARIABLE_CARD_CVC);
+        final String confirmation = sendEmailService.chargeCreditCard(reference, amount, cardNumber, cardExpiry, cardCVC);
         */
-
-        //final String confirmation = sendEmailService.chargeCreditCard(reference, amount, cardNumber, cardExpiry, cardCVC);
 
         final String confirmation = sendEmailService.sendEmail(emailMessageContent);
 
