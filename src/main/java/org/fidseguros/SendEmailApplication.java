@@ -5,6 +5,7 @@ import io.camunda.zeebe.client.api.worker.JobWorker;
 import io.camunda.zeebe.client.impl.oauth.OAuthCredentialsProvider;
 import io.camunda.zeebe.client.impl.oauth.OAuthCredentialsProviderBuilder;
 import org.fidseguros.handler.SendEmailServiceHandler;
+import org.fidseguros.handler.SaveDataServiceHandler;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,7 +62,7 @@ public class SendEmailApplication {
 
         // Get beans from Spring context
         SendEmailServiceHandler handlerSendMail = context.getBean(SendEmailServiceHandler.class);
-        SendEmailServiceHandler handlerSaveData = context.getBean(SendEmailServiceHandler.class);
+        SaveDataServiceHandler handlerSaveData = context.getBean(SaveDataServiceHandler.class);
 
         final String zeebeClientId = System.getProperty("ZEEBE_CLIENT_ID");
         final String zeebeClientSecret = System.getProperty("ZEEBE_CLIENT_SECRET");
@@ -115,7 +116,7 @@ public class SendEmailApplication {
                          .open();
          System.out.println("Worker opened for job type: " + SEND_EMAIL_JOB_TYPE + ". Application is now waiting for jobs asynchronously.");
 
-         // Start a Job Worker for job type: SEND_EMAIL_JOB_TYPE
+         // Start a Job Worker for job type: SAVE_DATA_JOB_TYPE
          final JobWorker saveDataWorker =
                  client.newWorker()
                          .jobType(SAVE_DATA_JOB_TYPE)

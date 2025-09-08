@@ -17,8 +17,8 @@ public class SaveDataServiceHandler implements JobHandler {
     private static final Logger LOG = LoggerFactory.getLogger(SaveDataServiceHandler.class);
 
     // Process's Variables
-    private static final String VARIABLE1 = "email_message_content";
-    private static final String VARIABLE_CONFIRMATION = "confirmation";
+    private static final String VARIABLE1 = "variable1";
+    private static final String VARIABLE_CONFIRMATION = "confirmation_save_data";
 
     @Override
     public void handle(JobClient client, ActivatedJob job) throws Exception {
