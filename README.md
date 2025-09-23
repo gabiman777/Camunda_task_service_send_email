@@ -1,6 +1,7 @@
 # Qué hace este proyecto
 
-Resuelve las tareas de servicio (sistema) de un diagrama BPM cuyo id es "Process_send_email_message_custom"
+1. Crea un proceso cuyo id es "Process_send_email_message_custom"
+2. Resuelve las tareas de servicio (sistema) del proceso 
 
 
 # Pasos para ejecutar el proyecto:
