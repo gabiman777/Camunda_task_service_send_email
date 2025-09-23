@@ -1,3 +1,8 @@
+# Qué hace este proyecto
+
+Resuelve las tareas de servicio (sistema) de un diagrama BPM cuyo id es "Process_send_email_message_custom"
+
+
 # Pasos para ejecutar el proyecto:
 
 mvn clean compile
